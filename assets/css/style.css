@@ -10,8 +10,8 @@
     --button2Bg: #b7b7b7;
     --inputBorder: #b7b7b7;
     --cardBg: #32475a;
-    --Light: white;
-    --Dark: black;
+    --light: white;
+    --dark: black;
 }
 
 body {
@@ -20,11 +20,15 @@ body {
 
 .container {
     display: flex;
-
+    width:100vw;
+    height:100vh;
+    flex-wrap: nowrap;
+    flex-direction: row;
 }
 
 .header {
     width: 100vw;
+    min-width: 1000px;
     height: 60px;
     display: block;
     background-image: linear-gradient(to right, blue, darkblue);
@@ -43,7 +47,8 @@ body {
 }
 
 .sidebar {
-    width: 250px;
+    width: 20vw;
+    min-width:200px;
     height: 100vh;
     display: block;
     float: left;
@@ -83,6 +88,10 @@ body {
 
 .weatherBox {
     width: 75vw;
+    min-width:500px;
+}
+
+.curret {
     height: 175px;
     border: 2px solid black;
     text-align: left;
@@ -91,6 +100,48 @@ body {
     padding: 5px;
 }
 
-.weatherBox p {
+.current h1{
+    padding-bottom: 50px;
+}
+
+.current p {
     margin-top: 10px; 
+}
+
+.fiveDay {
+    display: grid;
+    grid-template-columns: repeat(5, 185px);
+    grid-template-rows: 25px 220px;
+    grid-gap: 10px;
+    height: 175px;
+    border: 2px solid black;
+    text-align: left;
+    margin-left: 25px;
+    margin-top: 10px;
+    padding: 5px;
+}
+
+.gridHeader {
+    grid-column: 1 / -1;
+}
+
+.fiveDay h1 {
+    font-size: 22px;
+}
+.card {
+    min-height:150px;
+    min-width:150px;
+    max-width:170px;
+    max-height:180px;
+    padding-top: 1px;
+    padding-left: 5px;
+    background-color: var(--cardBg);
+    
+}
+
+.card p {
+    font-size:15px;
+    margin: 5px;
+    color: var(--light);
+    margin: 8px 0px;
 }
