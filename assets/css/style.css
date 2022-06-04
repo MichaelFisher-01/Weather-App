@@ -91,7 +91,7 @@ body {
     min-width:500px;
 }
 
-.curret {
+.today {
     height: 175px;
     border: 2px solid black;
     text-align: left;
@@ -100,12 +100,8 @@ body {
     padding: 5px;
 }
 
-.current h1{
-    padding-bottom: 50px;
-}
-
-.current p {
-    margin-top: 10px; 
+.today p {
+    line-height: 2; 
 }
 
 .fiveDay {
