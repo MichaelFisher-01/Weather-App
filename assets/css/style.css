@@ -86,6 +86,17 @@ body {
     margin: 10px 0px;
 }
 
+.savedCities button{
+    width: 100%;
+    border: none;
+    background-color: var(--button2Bg);
+    color: var(--light);
+    text-align: center;
+    border-radius: 4px;
+    height: 25px;
+    margin: 3px 0px;
+}
+
 .weatherBox {
     width: 75vw;
     min-width:500px;
