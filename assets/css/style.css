@@ -60,6 +60,10 @@ body {
     font-size: 24px;
 }
 
+.sidebar p {
+    text-align: center;
+}
+
 .sidebarSearch {
     display: block;
     align-items: center;
@@ -151,4 +155,42 @@ body {
     margin: 5px;
     color: var(--light);
     margin: 8px 0px;
+}
+
+.uvLow {
+    background-color: green;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    border-radius: 4px;
+    width: 50px;
+    height: 25px;
+}
+
+.uvMod {
+    background-color: yellow;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    border-radius: 4px;
+    width: 50px;
+    height: 25px;
+    
+}
+
+.uvHigh {
+    background-color: orange;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    border-radius: 4px;
+    width: 50px;
+    height: 25px;
+    
+}
+
+.uvSevere {
+    background-color: red;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    border-radius: 4px;
+    width: 50px;
+    height: 25px;
 }
