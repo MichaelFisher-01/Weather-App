@@ -90,6 +90,12 @@ body {
     margin: 10px 0px;
 }
 
+.sidebarSearch button:active {
+    background-color: white;
+    color: black;
+    border: 2px solid var(--button1Bg);
+}
+
 .savedCities button{
     width: 100%;
     border: none;
@@ -99,6 +105,12 @@ body {
     border-radius: 4px;
     height: 25px;
     margin: 3px 0px;
+}
+
+.savedCities button:active {
+    background-color: white;
+    color: black;
+    border-right: 2px solid var(--button2Bg);
 }
 
 .weatherBox {
@@ -121,15 +133,12 @@ body {
 
 .fiveDay {
     display: grid;
-    grid-template-columns: repeat(5, 185px);
     grid-template-rows: 25px 220px;
     grid-gap: 10px;
-    height: 175px;
-    border: 2px solid black;
-    text-align: left;
+    padding-top: 1px;
+    padding-left: 5px;
+    border: 2px solid red;
     margin-left: 25px;
-    margin-top: 10px;
-    padding: 5px;
 }
 
 .gridHeader {
@@ -139,6 +148,18 @@ body {
 .fiveDay h1 {
     font-size: 22px;
 }
+
+.forecastCards {
+    display: grid;
+    grid-template-columns: repeat(5,135px);
+    grid-template-rows: 220px;
+    grid-gap: 15px;
+    height: 125px;
+    border: 2px solid black;
+    text-align: left;
+    padding: 5px;
+}
+
 .card {
     min-height:150px;
     min-width:150px;
