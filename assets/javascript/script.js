@@ -6,7 +6,10 @@ var cityList = document.getElementById("cityList");
 var todayEl = document.getElementById("today");
 var fiveDayEl = document.getElementById("fiveDay");
 var forecastEl = document.getElementById("forecastCards")
-
+var lastUpdateEl = document.createElement('h3');
+var updaterEl = document.createElement('button');
+updaterEl.setAttribute('id', 'updater');
+updaterEl.innerText = "Update Now";
 // Global Variables
 var apiKey = '679579c74563b14f3d59e1876e9cfe37';
 var alertEl = document.createElement('p');
@@ -16,8 +19,9 @@ var long = 0;
 var cityName;
 var cityState;
 var cityCountry;
-var city;
+var citySearch;
 var forecastArray = [];
+
 // Page Setup
 genSavedCities();
 
@@ -26,10 +30,10 @@ genSavedCities();
 function genSavedCities () {
     savedCitiesList = JSON.parse(localStorage.getItem("savedCities"));
     if (savedCitiesList != null){
-    savedCitiesList.forEach(function (item, index, array){
-        btnName = savedCitiesList[index];
-        genCityButton(btnName);
-    })
+        savedCitiesList.forEach(function (item, index, array){
+            btnName = savedCitiesList[index];
+            genCityButton(btnName);
+        })
     }
 }
 
@@ -37,7 +41,7 @@ function searchWeather (event) {
     event.preventDefault();
     if (inputEl.value != ""){
         alertEl.innerText="";
-        city = inputEl.value;
+        citySearch = inputEl.value;
         inputEl.value = "";
         grabLocation();
     }
@@ -47,17 +51,17 @@ function searchWeather (event) {
     }
 }
 
-function genCityButton (city){
+function genCityButton (citySearch){
         var btn = document.createElement('button')
-        btn.innerText = city;
-        btn.setAttribute('id', city);
+        btn.innerText = citySearch;
+        btn.setAttribute('id', citySearch);
         var listEl = document.createElement("li")
         listEl.appendChild(btn);
         cityList.appendChild(listEl);   
 }
 
 function grabLocation() {
-fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`)
+fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${citySearch}&limit=1&appid=${apiKey}`)
 	.then(function(response) {
             return response.json();
         })
@@ -98,17 +102,19 @@ function grabWeather(lata, long) {
             todayWind = data.current.wind_speed;
             todayHumi = data.current.humidity;
             todayUV = data.current.uvi;
+            currentTime = moment().format('LLLL');
             //Five Day Forcast Information
             for (i=0;i<=4;i++){
+                var date = moment().add(i, 'days').format('LL');
                 var fiveTemp = data.daily[i].temp.day;
                 var fiveWind = data.daily[i].wind_speed;
                 var fiveHumid = data.daily[i].humidity;
                 var icon = data.daily[i].weather[0].icon;
                 var fiveIcon ="http://openweathermap.org/img/wn/"+icon+"@2x.png";
-                console.log(fiveIcon);
-                
                 var forecastObj = 
-                    {"temp": "Temp " + fiveTemp + String.fromCharCode(176) + " F",
+                    {
+                    "date": date,
+                    "temp": "Temp " + fiveTemp + String.fromCharCode(176) + " F",
                     "wind": "Wind: " + fiveWind + " MPH",
                     "humidity": "Humidity: " + fiveHumid + " %", 
                     "icon": fiveIcon,
@@ -122,6 +128,9 @@ function grabWeather(lata, long) {
                 {"cityName": cityName,
                  "cityState":cityState,
                  "cityCountry":cityCountry,
+                 "updater": currentTime,
+                 "cityLat": lata,
+                 "cityLong": long,
                  "temp": "Temp " + todayTemp + String.fromCharCode(176) + " F",
                  "wind": "Wind: " + todayWind + " MPH",
                  "humidity": "Humidity: " + todayHumi + " %",
@@ -129,7 +138,7 @@ function grabWeather(lata, long) {
             ]
    
             JSON.stringify(recentSearch);
-            localStorage.setItem(city, JSON.stringify(recentSearch))
+            localStorage.setItem(citySearch, JSON.stringify(recentSearch))
             console.log(data);
             
             fillToday();
@@ -151,8 +160,8 @@ function fillToday () {
     uvSpan = document.createElement('button');
     uvSpan.setAttribute('id', 'uvBtn')
     //pull the stored data to fill out today's weather info
-    data = (JSON.parse(localStorage.getItem(city)));
-    headerEl.innerText = cityName + " ," + cityState + " ," + cityCountry
+    data = (JSON.parse(localStorage.getItem(citySearch)));
+    headerEl.innerText = cityName + ", " + cityState + ", " + cityCountry
     todayEl.appendChild(headerEl);
     tempEl.innerText = data[0].temp;
     windEl.innerText = data[0].wind;
@@ -182,7 +191,7 @@ function fiveDay () {
     //Clear out any previously generated cards
     clrContent (forecastEl);
     //pull the local storage data for the city we looked up
-    forecastArray = JSON.parse(localStorage.getItem(`${city}FiveDay`));
+    forecastArray = JSON.parse(localStorage.getItem(`${cityName}FiveDay`));
     //loop through the data and create 5 cards based on it.
     for (i=0; i <= 4; i++){
 
@@ -194,7 +203,7 @@ function fiveDay () {
 
         divEl.classList.add('card');
 
-        dateEl.innerText = "3/31/2022";
+        dateEl.innerText = forecastArray[i].date;
         tempEl.innerText = forecastArray[i].temp;
         windEl.innerText = forecastArray[i].wind;
         humidEl.innerText = forecastArray[i].humidity;
@@ -212,8 +221,11 @@ function fiveDay () {
 
 function savedCityData (event) {
     clrContent(todayEl);
+    clrContent(forecastEl);
+//Pull the current data
     element = event.target;
     savedCity = JSON.parse(localStorage.getItem(element.id));
+//Html elements
     headerEl = document.createElement('h1');
     tempEl = document.createElement('p');
     windEl = document.createElement('p');
@@ -221,12 +233,18 @@ function savedCityData (event) {
     uvEl = document.createElement('p');
     uvSpan = document.createElement('button');
     uvSpan.setAttribute('id', 'uvBtn')
-    data = (JSON.parse(localStorage.getItem(savedCity)));
-    headerEl.innerText = savedCity[0].cityName;
+    updaterEl.setAttribute('id', 'updater');
+//Creating the header elements for current weather box.
+    headerEl.innerText = savedCity[0].cityName + " ," + savedCity[0].cityState + " ," + savedCity[0].cityCountry;
+    lastUpdateEl.innerText = "Last Updated: " + savedCity[0].updater;
     todayEl.appendChild(headerEl);
+    lastUpdateEl.appendChild(updaterEl);
+    todayEl.appendChild(lastUpdateEl);
+//Assigning the stored values for the clicked city.
     tempEl.innerText = savedCity[0].temp;
     windEl.innerText = savedCity[0].wind;
     humidEl.innerText = savedCity[0].humidity;
+//Set a CSS class to change the color based on UV values.
     uvSpan.innerText = savedCity[0].uvIndex;
         if (savedCity[0].uvIndex < 3){
             uvSpan.classList.add("uvLow");
@@ -241,6 +259,7 @@ function savedCityData (event) {
             uvSpan.classList.add("uvSevere");
         }
     uvEl.innerText = "UV Index: ";
+// Push all the created elements to index.html to display the current weather.
     uvEl.append(uvSpan);
     todayEl.appendChild(tempEl);
     todayEl.appendChild(windEl);
