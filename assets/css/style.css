@@ -53,7 +53,6 @@ body {
     display: block;
     float: left;
     padding: 5px;
-    border: 2px solid black;
 }
 
 .sidebar h1 {
@@ -115,12 +114,17 @@ body {
 
 .weatherBox {
     width: 75vw;
-    min-width:500px;
+    min-width:500px;  
 }
 
-.today {
-    height: 175px;
-    border: 2px solid black;
+.today {  
+    height: 200px;
+    background: 
+    linear-gradient(white 0 0) padding-box,
+    linear-gradient(to right, black, white) border-box;
+    padding: 10px;
+    border: 2px solid transparent;
+    border-radius: 5px;
     text-align: left;
     margin-left: 25px;
     margin-top: 10px;
@@ -137,7 +141,6 @@ body {
     grid-gap: 10px;
     padding-top: 1px;
     padding-left: 5px;
-    border: 2px solid red;
     margin-left: 25px;
 }
 
@@ -153,18 +156,15 @@ body {
     display: grid;
     grid-template-columns: repeat(5,135px);
     grid-template-rows: 220px;
-    grid-gap: 15px;
+    grid-gap: 30px;
     height: 125px;
-    border: 2px solid black;
     text-align: left;
     padding: 5px;
 }
 
 .card {
-    min-height:150px;
-    min-width:150px;
-    max-width:170px;
-    max-height:180px;
+    width:140px;
+    height:150px;
     padding-top: 1px;
     padding-left: 5px;
     background-color: var(--cardBg);

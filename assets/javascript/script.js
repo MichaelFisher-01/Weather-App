@@ -5,7 +5,7 @@ var inputEl = document.getElementById("inputCity");
 var cityList = document.getElementById("cityList");
 var todayEl = document.getElementById("today");
 var fiveDayEl = document.getElementById("fiveDay");
-var forecastCards = document.getElementById("forecastCards")
+var forecastEl = document.getElementById("forecastCards")
 
 // Global Variables
 var apiKey = '679579c74563b14f3d59e1876e9cfe37';
@@ -13,11 +13,10 @@ var alertEl = document.createElement('p');
 var savedCities = JSON.parse(localStorage.getItem('savedCities')) || [];
 var lata = 0;
 var long = 0;
+var cityName;
+var cityState;
+var cityCountry;
 var city;
-var todayTemp;
-var todayWind;
-var todayHumi;
-var todayUV;
 var forecastArray = [];
 // Page Setup
 genSavedCities();
@@ -41,15 +40,6 @@ function searchWeather (event) {
         city = inputEl.value;
         inputEl.value = "";
         grabLocation();
-    if (!savedCities.includes(city)){ 
-            genCityButton(city);
-            savedCities.push(city);
-            localStorage.setItem("savedCities", JSON.stringify(savedCities));
-        }
-    else {
-            alertEl.innerText="Already Created";
-            sideBar.appendChild(alertEl)
-        }
     }
     else {
         alertEl.innerText = "Please Enter A City";
@@ -71,11 +61,30 @@ fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${ap
 	.then(function(response) {
             return response.json();
         })
-    .then(function (data){
-        lata = data[0].lat;
-        long = data[0].lon;
-        grabWeather(lata, long);
-        })
+    .then(function (data) {
+        console.log(data);
+        if (data.length === 0){
+            alertEl.innerText="Unable to Locate. Please check spelling.";
+            sideBar.appendChild(alertEl)
+        }
+        else {
+            lata = data[0].lat;
+            long = data[0].lon;
+            cityName = data[0].name;
+            cityState = data[0].state;
+            cityCountry = data[0].country;
+            if(!savedCities.includes(cityName)) {
+                savedCities.push(cityName);
+                localStorage.setItem("savedCities", JSON.stringify(savedCities));
+                genCityButton(cityName);
+            }
+            else {
+                alertEl.innerText="Already Created";
+                sideBar.appendChild(alertEl)
+            }
+            grabWeather(lata, long);
+        }
+    })
 }
 
 function grabWeather(lata, long) {
@@ -107,10 +116,12 @@ function grabWeather(lata, long) {
             
                 forecastArray.push(forecastObj);
             }
-            localStorage.setItem(city+"FiveDay", JSON.stringify(forecastArray));
+            localStorage.setItem(cityName+"FiveDay", JSON.stringify(forecastArray));
             forecastArray = [];
             var recentSearch = [
-                {"cityName": city,
+                {"cityName": cityName,
+                 "cityState":cityState,
+                 "cityCountry":cityCountry,
                  "temp": "Temp " + todayTemp + String.fromCharCode(176) + " F",
                  "wind": "Wind: " + todayWind + " MPH",
                  "humidity": "Humidity: " + todayHumi + " %",
@@ -130,6 +141,7 @@ function grabWeather(lata, long) {
 function fillToday () {
     // Clear out current contents of today box
     clrContent (todayEl);
+    console.log("Clear Complete");
     //DOM Variables
     headerEl = document.createElement('h1');
     tempEl = document.createElement('p');
@@ -140,7 +152,7 @@ function fillToday () {
     uvSpan.setAttribute('id', 'uvBtn')
     //pull the stored data to fill out today's weather info
     data = (JSON.parse(localStorage.getItem(city)));
-    headerEl.innerText = data[0].cityName;
+    headerEl.innerText = cityName + " ," + cityState + " ," + cityCountry
     todayEl.appendChild(headerEl);
     tempEl.innerText = data[0].temp;
     windEl.innerText = data[0].wind;
@@ -168,7 +180,7 @@ function fillToday () {
 
 function fiveDay () {
     //Clear out any previously generated cards
-    clrContent (forecastCards);
+    clrContent (forecastEl);
     //pull the local storage data for the city we looked up
     forecastArray = JSON.parse(localStorage.getItem(`${city}FiveDay`));
     //loop through the data and create 5 cards based on it.
