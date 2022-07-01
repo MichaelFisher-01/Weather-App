@@ -81,10 +81,6 @@ fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${citySearch}&limit=1&appi
                 localStorage.setItem("savedCities", JSON.stringify(savedCities));
                 genCityButton(cityName);
             }
-            else {
-                alertEl.innerText="Already Created";
-                sideBar.appendChild(alertEl)
-            }
             grabWeather(lati, long);
         }
     })
