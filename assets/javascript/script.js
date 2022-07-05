@@ -58,7 +58,7 @@ function searchWeather (event) {
 //Function to convert the search term into latitude and Longitue
 function grabLocation() {
 //Send the API the info from the search box then the API sends back Latitude and Longitude.
-fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${citySearch}&limit=1&appid=${apiKey}`)
+fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${citySearch}&limit=1&appid=${apiKey}`)
 	.then(function(response) {
             return response.json();
         })
@@ -137,7 +137,6 @@ function grabWeather(lati, long) {
                  "uvIndex": todayUV,}
             ]
             //saving the Today's weather object to local storage so we can use it whenever.
-            JSON.stringify(recentSearch);
             localStorage.setItem(cityName, JSON.stringify(recentSearch));
             // These two functions will create all the html elements needed to display the weather.
             fillToday();
