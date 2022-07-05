@@ -64,7 +64,6 @@ fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${citySearch}&limit=1&app
         })
     .then(function (data) {
         //If the city is misspelled then it will return a blank array. This alerts the user if that happens.
-        console.log(data);
         if (data.length === 0){
             alertEl.innerText="Unable to Locate. Please check spelling.";
             sideBar.appendChild(alertEl)
@@ -106,7 +105,7 @@ function grabWeather(lati, long) {
                 var fiveWind = data.daily[i].wind_speed;
                 var fiveHumid = data.daily[i].humidity;
                 var icon = data.daily[i].weather[0].icon;
-                var fiveIcon ="http://openweathermap.org/img/wn/"+icon+"@2x.png";
+                var fiveIcon ="https://openweathermap.org/img/wn/"+icon+"@2x.png";
                 //Each loop generates an object for 1 day.
                 var forecastObj = 
                     {
@@ -225,7 +224,6 @@ function savedCityData (event) {
 //Pull the current data for current weather
     element = event.target;
     citySearch = element.id;
-    console.log(citySearch);
     savedCity = JSON.parse(localStorage.getItem(element.id));
 //Html elements
     headerEl = document.createElement('h1');
