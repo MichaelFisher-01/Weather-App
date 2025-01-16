@@ -13,7 +13,7 @@ updaterEl.classList.add('updater');
 updaterEl.innerText = "Update Now";
 
 // Global Variables
-var apiKey = '679579c74563b14f3d59e1876e9cfe37';
+var apiKey = '58bd7723b3ac2c9b8b230ea5936f0fe4';
 var alertEl = document.createElement('p');
 var savedCities = JSON.parse(localStorage.getItem('savedCities')) || [];
 var lati = 0;
@@ -72,9 +72,7 @@ fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${citySearch}&limit=1&app
         else {
             lati = data[0].lat;
             long = data[0].lon;
-            cityName = data[0].name;
-            cityState = data[0].state;
-            cityCountry = data[0].country;
+            cityName = data[0].name + ", " + data[0].state + ", " + data[0].country;
             if(!savedCities.includes(cityName)) {
                 savedCities.push(cityName);
                 localStorage.setItem("savedCities", JSON.stringify(savedCities));
@@ -87,11 +85,12 @@ fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${citySearch}&limit=1&app
 
 function grabWeather(lati, long) {
     //Sends the API the latitude and longitude then gets back the weather.
-    fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lati}&lon=${long}&exclude=minutely,hourly&appid=${apiKey}&units=imperial`)
+    fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${lati}&lon=${long}&exclude=minutely,hourly&appid=${apiKey}&units=imperial`)
         .then(function(response) {
             return response.json();
         })
         .then(function (data){  
+            console.log(data);
             //Grabbing the values for today's weather information
             todayTemp = data.current.temp;
             todayWind = data.current.wind_speed;
@@ -156,8 +155,9 @@ function fillToday () {
     uvSpan = document.createElement('button');
     uvSpan.setAttribute('id', 'uvBtn')
     //pull the stored data to fill out today's weather info
-    data = (JSON.parse(localStorage.getItem(citySearch)));
-    headerEl.innerText = cityName + ", " + cityState + ", " + cityCountry
+    data = (JSON.parse(localStorage.getItem(cityName)));
+    console.log("data is: " + data);
+    headerEl.innerText = cityName 
     todayEl.appendChild(headerEl);
     tempEl.innerText = data[0].temp;
     windEl.innerText = data[0].wind;
@@ -236,7 +236,7 @@ function savedCityData (event) {
     uvSpan = document.createElement('button');
     uvSpan.setAttribute('id', 'uvBtn')
 //Creating the header elements for current weather box.
-    headerEl.innerText = savedCity[0].cityName + ", " + savedCity[0].cityState + ", " + savedCity[0].cityCountry;
+    headerEl.innerText = savedCity[0].cityName;
     headerEl.appendChild(updaterEl);
     lastUpdateEl.innerText = "Last Updated: " + savedCity[0].updater;
     todayEl.appendChild(headerEl);

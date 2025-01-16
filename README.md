@@ -13,7 +13,7 @@ This is a weather application that will take in the users input then find the cu
 
 ## Installation
 
-The application will work by visiting: https://michaelfisher-01.github.io/Challenge-6-Weather-/
+The application will work by visiting: https://michaelfisher-01.github.io/Weather-App/
 
 ## Usage
 

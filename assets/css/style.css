@@ -9,7 +9,7 @@
     --button1Bg: #59a2e9;
     --button2Bg: #b7b7b7;
     --inputBorder: #b7b7b7;
-    --cardBg: #32475a;
+    --cardBg: #446c92;
     --light: white;
     --dark: black;
 }
@@ -116,9 +116,8 @@ body {
 
 
 .weatherBox {
-    width: 60vw;
-    min-width:500px;
-    max-width: 1000px;  
+    min-width:250px;
+    max-width: 750px;  
 }
 
 .today {  
@@ -168,23 +167,27 @@ body {
 .forecastCards {
     display: grid;
     grid-template-columns: repeat(5,135px);
-    grid-template-rows: 220px;
-    grid-gap: 30px;
-    height: 125px;
+    grid-template-rows: 240px;
+    grid-gap: 40px;
+    height: 225px;
+    width: 72vw;
     text-align: left;
     padding: 5px;
 }
 
 .card {
-    width:140px;
-    height:150px;
+    width:150px;
+    height:190px;
+    position: relative;
     padding-top: 1px;
-    padding-left: 5px;
+    padding-left: 10px;
+    border-radius: 20px;
+    overflow: hidden;
     background-color: var(--cardBg);
-    
 }
 
 .card p {
+    z-index: 1;
     font-size:15px;
     margin: 5px;
     color: var(--light);
